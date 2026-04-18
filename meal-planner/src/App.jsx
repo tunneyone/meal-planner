@@ -5,13 +5,13 @@ const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sun
 const MEAL_TYPES = ["Breakfast","Lunch","Dinner","Snacks"];
 const UNITS = ["whole","g","kg","ml","l","tsp","tbsp","cup","oz","lb","bunch","clove","slice","tin","pack","handful","pinch","sprig","head"];
 const PREP_TIMES = [5,10,15,20,30,45,60,90,120];
-const MEAL_TAGS = ["Quick","Meal Prep","Leftover","Eating Out","Skip"];
+const MEAL_TAGS = ["Quick","Meal Prep","Leftover","Meal Out","Eating Out","Skip"];
 const DIETARY_TAGS = ["Vegetarian","Vegan","Gluten-Free","Dairy-Free","High Protein","Low Carb","Keto"];
 const GROCERY_SECTIONS = ["Produce","Meat & Seafood","Dairy & Eggs","Pantry & Dry Goods","Frozen","Bakery & Bread","Beverages","Condiments & Sauces","Snacks","Home","Utility","Bathroom","Other"];
 const SECTION_ICONS = {"Produce":"🥦","Meat & Seafood":"🥩","Dairy & Eggs":"🥚","Pantry & Dry Goods":"🫙","Frozen":"❄️","Bakery & Bread":"🍞","Beverages":"🧃","Condiments & Sauces":"🧴","Snacks":"🍿","Home":"🏠","Utility":"🔧","Bathroom":"🧼","Other":"📦"};
 const RECIPE_SECTIONS = ["Breakfast","Lunch","Dinner","Snacks","Leftover"];
 const TAG_COLORS = {"Vegetarian":"#4caf78","Vegan":"#6bc98a","Gluten-Free":"#e8a44a","Dairy-Free":"#9b7fe8","High Protein":"#e86b5f","Low Carb":"#5ba3e0","Keto":"#d4a843"};
-const MEAL_TAG_COLORS = {"Quick":"#4caf78","Meal Prep":"#e8a44a","Leftover":"#9b7fe8","Eating Out":"#5ba3e0","Skip":"#aaa"};
+const MEAL_TAG_COLORS = {"Quick":"#4caf78","Meal Prep":"#e8a44a","Leftover":"#9b7fe8","Meal Out":"#e86b5f","Eating Out":"#5ba3e0","Skip":"#aaa"};
 const C = {bg:"#f0f4f8",card:"#ffffff",border:"#cdd8e8",accent:"#2d6be4",dark:"#0f1f3d",light:"#e8f0fc",text:"#1a2840",muted:"#7a8fa8"};
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -75,9 +75,9 @@ const loadState = () => { try { const s = localStorage.getItem(STORAGE_KEY); ret
 const saveState = (d) => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch {} };
 
 // ── Style helpers ─────────────────────────────────────────────────────────────
-const inp = (ex={}) => ({width:"100%",padding:"8px 11px",borderRadius:9,border:`1px solid ${C.border}`,background:C.card,fontSize:14,color:C.text,outline:"none",boxSizing:"border-box",fontFamily:"'Lato',sans-serif",...ex});
-const btn = (bg, color, ex={}) => ({background:bg,color,border:`1px solid ${color && color !== "#fff" ? color+"33" : "transparent"}`,borderRadius:9,padding:"7px 14px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Lato',sans-serif",whiteSpace:"nowrap",...ex});
-const lbl = () => ({display:"block",fontSize:11,fontWeight:700,color:C.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:5,fontFamily:"'Playfair Display',serif"});
+const inp = (ex={}) => ({width:"100%",padding:"8px 11px",borderRadius:9,border:`1px solid ${C.border}`,background:C.card,fontSize:14,color:C.text,outline:"none",boxSizing:"border-box",fontFamily:"'DM Sans',sans-serif",...ex});
+const btn = (bg, color, ex={}) => ({background:bg,color,border:`1px solid ${color && color !== "#fff" ? color+"33" : "transparent"}`,borderRadius:9,padding:"7px 14px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap",...ex});
+const lbl = () => ({display:"block",fontSize:11,fontWeight:700,color:C.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:5,fontFamily:"'Cormorant Garamond',serif"});
 
 const Field = ({label, children, mt=0}) => (
   <div style={{marginBottom:13, marginTop:mt}}>
@@ -87,7 +87,7 @@ const Field = ({label, children, mt=0}) => (
 );
 
 const Badge = ({label, color, small}) => (
-  <span style={{display:"inline-flex",alignItems:"center",background:`${color}22`,color,border:`1px solid ${color}55`,borderRadius:20,padding:small?"1px 7px":"2px 9px",fontSize:small?10:11,fontWeight:700,whiteSpace:"nowrap",fontFamily:"'Playfair Display',serif"}}>
+  <span style={{display:"inline-flex",alignItems:"center",background:`${color}22`,color,border:`1px solid ${color}55`,borderRadius:20,padding:small?"1px 7px":"2px 9px",fontSize:small?10:11,fontWeight:700,whiteSpace:"nowrap",fontFamily:"'Cormorant Garamond',serif"}}>
     {label}
   </span>
 );
@@ -223,7 +223,7 @@ const RecipeImporter = ({onImport, onClose}) => {
   return (
     <div style={{position:"fixed",inset:0,background:"rgba(30,20,10,.65)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:16,backdropFilter:"blur(4px)"}} onClick={onClose}>
       <div onClick={e => e.stopPropagation()} style={{background:C.card,borderRadius:20,width:"100%",maxWidth:520,padding:32,boxShadow:"0 24px 64px rgba(0,0,0,.3)"}}>
-        <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:22,color:C.text,marginBottom:6}}>Import Recipe</h2>
+        <h2 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:22,color:C.text,marginBottom:6}}>Import Recipe</h2>
         <p style={{fontSize:13,color:C.muted,marginBottom:20,lineHeight:1.6}}>Import from a website URL, take a photo of your recipe book, or upload a photo.</p>
 
         {/* Mode tabs */}
@@ -310,14 +310,14 @@ const CookMode = ({meal, onClose}) => {
   const scaleIng = ing => ({...ing, qty: scaleQty(ing.qty, meal.servings||2, servings)});
 
   return (
-    <div style={{position:"fixed",inset:0,background:"#1a0f05",zIndex:3000,overflowY:"auto",fontFamily:"'Lato',sans-serif"}}>
+    <div style={{position:"fixed",inset:0,background:"#1a0f05",zIndex:3000,overflowY:"auto",fontFamily:"'DM Sans',sans-serif"}}>
       <div style={{maxWidth:780,margin:"0 auto",padding:"0 16px 48px"}}>
         {/* Header */}
         <div style={{position:"sticky",top:0,background:"#1a0f05",padding:"18px 0 14px",zIndex:10,borderBottom:"1px solid rgba(255,255,255,.07)",marginBottom:28}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10}}>
             <div>
               <div style={{fontSize:11,color:C.accent,textTransform:"uppercase",letterSpacing:1,fontWeight:700}}>🍳 Cook Mode</div>
-              <h1 style={{fontFamily:"'Playfair Display',serif",color:"#fff",fontSize:24,marginTop:2}}>{meal.name}</h1>
+              <h1 style={{fontFamily:"'Cormorant Garamond',serif",color:"#fff",fontSize:24,marginTop:2}}>{meal.name}</h1>
             </div>
             <div style={{display:"flex",gap:10,alignItems:"center"}}>
               <div style={{display:"flex",alignItems:"center",gap:8,background:"rgba(255,255,255,.06)",borderRadius:10,padding:"6px 12px"}}>
@@ -334,7 +334,7 @@ const CookMode = ({meal, onClose}) => {
         <div style={{display:"grid",gridTemplateColumns:"200px 1fr",gap:28}}>
           {/* Ingredients */}
           <div>
-            <div style={{color:C.accent,fontWeight:700,fontSize:11,textTransform:"uppercase",letterSpacing:1,marginBottom:14,fontFamily:"'Playfair Display',serif"}}>Ingredients</div>
+            <div style={{color:C.accent,fontWeight:700,fontSize:11,textTransform:"uppercase",letterSpacing:1,marginBottom:14,fontFamily:"'Cormorant Garamond',serif"}}>Ingredients</div>
             {(meal.ingredients||[]).length === 0 && <div style={{color:"rgba(255,255,255,.3)",fontSize:13}}>None listed</div>}
             {(meal.ingredients||[]).map(ing => {
               const si = scaleIng(ing);
@@ -348,7 +348,7 @@ const CookMode = ({meal, onClose}) => {
             })}
             {meal.notes && (
               <div style={{marginTop:18,background:"rgba(45,107,228,.1)",border:"1px solid rgba(45,107,228,.18)",borderRadius:10,padding:13}}>
-                <div style={{color:C.accent,fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:.8,marginBottom:6,fontFamily:"'Playfair Display',serif"}}>Notes</div>
+                <div style={{color:C.accent,fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:.8,marginBottom:6,fontFamily:"'Cormorant Garamond',serif"}}>Notes</div>
                 <div style={{color:"rgba(255,255,255,.62)",fontSize:13,lineHeight:1.7,whiteSpace:"pre-wrap"}}>{meal.notes}</div>
               </div>
             )}
@@ -357,7 +357,7 @@ const CookMode = ({meal, onClose}) => {
 
           {/* Steps */}
           <div>
-            <div style={{color:C.accent,fontWeight:700,fontSize:11,textTransform:"uppercase",letterSpacing:1,marginBottom:14,fontFamily:"'Playfair Display',serif"}}>
+            <div style={{color:C.accent,fontWeight:700,fontSize:11,textTransform:"uppercase",letterSpacing:1,marginBottom:14,fontFamily:"'Cormorant Garamond',serif"}}>
               Method {steps.length > 0 && `· ${step+1} / ${steps.length}`}
             </div>
             {steps.length === 0 && <div style={{color:"rgba(255,255,255,.4)",fontSize:14,lineHeight:1.7}}>No steps added. Check the notes on the left.</div>}
@@ -374,7 +374,7 @@ const CookMode = ({meal, onClose}) => {
                       <div style={{color:active?"#fff":"rgba(255,255,255,.44)",fontSize:14,lineHeight:1.75}}>{s.text}</div>
                       {s.timerMins > 0 && active && (
                         <div style={{marginTop:12,display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
-                          <div style={{fontSize:30,fontWeight:700,fontFamily:"'Playfair Display',serif",color:t?.done?"#4caf78":t?.running?C.accent:"#fff",minWidth:80}}>
+                          <div style={{fontSize:30,fontWeight:700,fontFamily:"'Cormorant Garamond',serif",color:t?.done?"#4caf78":t?.running?C.accent:"#fff",minWidth:80}}>
                             {t ? fmtTime(t.remaining) : fmtTime(s.timerMins*60)}
                           </div>
                           <div style={{display:"flex",gap:6}}>
@@ -420,7 +420,7 @@ const MealEditor = ({meal, day, type, grid, favorites, onSave, onClose, onAddFav
 
   return (
     <div style={{position:"fixed",inset:0,background:"rgba(30,20,10,.62)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:16,backdropFilter:"blur(3px)"}} onClick={onClose}>
-      <div onClick={e => e.stopPropagation()} style={{background:C.card,borderRadius:20,width:"100%",maxWidth:640,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 64px rgba(0,0,0,.26)",padding:32,fontFamily:"'Lato',sans-serif"}}>
+      <div onClick={e => e.stopPropagation()} style={{background:C.card,borderRadius:20,width:"100%",maxWidth:640,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 64px rgba(0,0,0,.26)",padding:32,fontFamily:"'DM Sans',sans-serif"}}>
         {/* Header */}
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20}}>
           <div style={{flex:1,paddingRight:12}}>
@@ -429,7 +429,7 @@ const MealEditor = ({meal, day, type, grid, favorites, onSave, onClose, onAddFav
               {meal.label ? <span style={{marginLeft:8,color:"#7a5fc8"}}>· {meal.label}</span> : ""}
             </div>
             <input value={m.name} onChange={e=>up("name",e.target.value)} placeholder="Meal name…"
-              style={{...inp(),fontSize:21,fontWeight:700,fontFamily:"'Playfair Display',serif",border:"none",background:"transparent",padding:"4px 0",marginTop:3}} autoFocus />
+              style={{...inp(),fontSize:21,fontWeight:700,fontFamily:"'Cormorant Garamond',serif",border:"none",background:"transparent",padding:"4px 0",marginTop:3}} autoFocus />
           </div>
           <div style={{display:"flex",gap:6,flexShrink:0}}>
             {m.name && <button onClick={() => onCookNow(m)} style={btn(C.dark,"#fff",{border:"none",padding:"7px 12px"})}>🍳 Cook</button>}
@@ -467,7 +467,7 @@ const MealEditor = ({meal, day, type, grid, favorites, onSave, onClose, onAddFav
         <Field label="Meal Tags">
           <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
             {MEAL_TAGS.map(tag => (
-              <button key={tag} onClick={() => toggleTag("tags",tag)} style={{borderRadius:20,padding:"4px 12px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Lato',sans-serif",background:m.tags.includes(tag)?`${MEAL_TAG_COLORS[tag]}22`:"#f5f0ea",color:m.tags.includes(tag)?MEAL_TAG_COLORS[tag]:"#999",border:`1.5px solid ${m.tags.includes(tag)?MEAL_TAG_COLORS[tag]:"#ddd"}`}}>
+              <button key={tag} onClick={() => toggleTag("tags",tag)} style={{borderRadius:20,padding:"4px 12px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:m.tags.includes(tag)?`${MEAL_TAG_COLORS[tag]}22`:"#f5f0ea",color:m.tags.includes(tag)?MEAL_TAG_COLORS[tag]:"#999",border:`1.5px solid ${m.tags.includes(tag)?MEAL_TAG_COLORS[tag]:"#ddd"}`}}>
                 {tag}
               </button>
             ))}
@@ -486,7 +486,7 @@ const MealEditor = ({meal, day, type, grid, favorites, onSave, onClose, onAddFav
         <Field label="Dietary Tags">
           <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
             {DIETARY_TAGS.map(tag => (
-              <button key={tag} onClick={() => toggleTag("dietaryTags",tag)} style={{borderRadius:20,padding:"4px 12px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Lato',sans-serif",background:m.dietaryTags.includes(tag)?`${TAG_COLORS[tag]}22`:"#f5f0ea",color:m.dietaryTags.includes(tag)?TAG_COLORS[tag]:"#999",border:`1.5px solid ${m.dietaryTags.includes(tag)?TAG_COLORS[tag]:"#ddd"}`}}>
+              <button key={tag} onClick={() => toggleTag("dietaryTags",tag)} style={{borderRadius:20,padding:"4px 12px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:m.dietaryTags.includes(tag)?`${TAG_COLORS[tag]}22`:"#f5f0ea",color:m.dietaryTags.includes(tag)?TAG_COLORS[tag]:"#999",border:`1.5px solid ${m.dietaryTags.includes(tag)?TAG_COLORS[tag]:"#ddd"}`}}>
                 {tag}
               </button>
             ))}
@@ -535,7 +535,7 @@ const MealEditor = ({meal, day, type, grid, favorites, onSave, onClose, onAddFav
           <textarea value={m.notes} onChange={e=>up("notes",e.target.value)} placeholder="Tips, substitutions, sauce instructions…" style={{...inp(),height:68,resize:"vertical"}} />
         </Field>
 
-        <button onClick={() => onSave(m)} style={{marginTop:14,width:"100%",padding:"13px",background:"linear-gradient(135deg,#2d6be4,#1a52c8)",color:"#fff",border:"none",borderRadius:12,fontSize:15,fontWeight:700,cursor:"pointer",fontFamily:"'Playfair Display',serif",boxShadow:"0 4px 16px rgba(200,99,42,.3)"}}>
+        <button onClick={() => onSave(m)} style={{marginTop:14,width:"100%",padding:"13px",background:"linear-gradient(135deg,#2d6be4,#1a52c8)",color:"#fff",border:"none",borderRadius:12,fontSize:15,fontWeight:700,cursor:"pointer",fontFamily:"'Cormorant Garamond',serif",boxShadow:"0 4px 16px rgba(200,99,42,.3)"}}>
           Save Meal
         </button>
       </div>
@@ -553,14 +553,14 @@ const SingleCard = ({meal, onEdit, onClear, onCookNow, compact=false}) => {
   const cc = pd ? TAG_COLORS[pd] : C.accent;
   const isSkip = meal.tags?.includes("Skip");
   return (
-    <div style={{borderRadius:8,padding:compact?"6px 8px":"8px 10px",background:isSkip?"#f5f5f5":C.card,border:`1.5px solid ${isSkip?"#ddd":cc+"44"}`,borderLeft:`3px solid ${isSkip?"#bbb":cc}`,position:"relative",opacity:isSkip?.5:1,fontFamily:"'Lato',sans-serif",transition:"box-shadow .15s",cursor:"pointer"}}
+    <div style={{borderRadius:8,padding:compact?"8px 10px":"10px 12px",background:isSkip?"#f5f5f5":C.card,border:`1.5px solid ${isSkip?"#ddd":cc+"44"}`,borderLeft:`3px solid ${isSkip?"#bbb":cc}`,position:"relative",opacity:isSkip?.5:1,fontFamily:"'DM Sans',sans-serif",transition:"box-shadow .15s",cursor:"pointer"}}
       onMouseEnter={e=>e.currentTarget.style.boxShadow="0 3px 10px rgba(0,0,0,.08)"}
       onMouseLeave={e=>e.currentTarget.style.boxShadow="none"}>
       <button onClick={e=>{e.stopPropagation();onClear();}} style={{position:"absolute",top:3,right:5,background:"none",border:"none",color:"#ccc",cursor:"pointer",fontSize:13,padding:1,lineHeight:1}}>×</button>
       {!compact && <button onClick={e=>{e.stopPropagation();onCookNow(meal);}} title="Cook now" style={{position:"absolute",bottom:3,right:6,background:"none",border:"none",color:"#ccc",cursor:"pointer",fontSize:10,padding:0,lineHeight:1}}>🍳</button>}
       <div onClick={()=>onEdit(meal)}>
         {meal.label && <div style={{fontSize:9,fontWeight:800,color:C.accent,textTransform:"uppercase",letterSpacing:.8,marginBottom:2}}>{meal.label}</div>}
-        <div style={{fontSize:compact?11:12,fontWeight:700,color:C.text,paddingRight:16,lineHeight:1.3,fontFamily:"'Playfair Display',serif"}}>{meal.name}</div>
+        <div style={{fontSize:compact?11:12,fontWeight:700,color:C.text,paddingRight:16,lineHeight:1.3,fontFamily:"'Cormorant Garamond',serif"}}>{meal.name}</div>
         {!compact && <div style={{display:"flex",flexWrap:"wrap",gap:2,marginTop:3}}>
           {meal.tags?.slice(0,1).map(t=><Badge key={t} label={t} color={MEAL_TAG_COLORS[t]} small/>)}
           {meal.dietaryTags?.slice(0,1).map(t=><Badge key={t} label={t} color={TAG_COLORS[t]} small/>)}
@@ -598,7 +598,7 @@ const MealCard = ({slot, day, type, onEditSingle, onClearSlot, onClearSub, onSpl
   if (isEmpty) return (
     <div style={{position:"relative"}} ref={menuRef}>
       <div onClick={()=>setShowMenu(f=>!f)}
-        style={{minHeight:52,border:`1.5px dashed ${C.border}`,borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",color:C.muted,fontSize:12,cursor:"pointer",background:C.card,fontFamily:"'Lato',sans-serif",transition:"border-color .15s"}}
+        style={{minHeight:68,border:`1.5px dashed ${C.border}`,borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",color:C.muted,fontSize:12,cursor:"pointer",background:C.card,fontFamily:"'DM Sans',sans-serif",transition:"border-color .15s"}}
         onMouseEnter={e=>e.currentTarget.style.borderColor=C.accent}
         onMouseLeave={e=>e.currentTarget.style.borderColor=C.border}>
         + Add meal
@@ -608,16 +608,16 @@ const MealCard = ({slot, day, type, onEditSingle, onClearSlot, onClearSub, onSpl
           {favorites.length>0 && <div style={{padding:"5px 10px",fontSize:10,fontWeight:700,color:C.accent,textTransform:"uppercase",letterSpacing:1,borderBottom:`1px solid ${C.border}`}}>Quick Fill</div>}
           {favorites.map(fav=>(
             <div key={fav.id} onClick={()=>{onQuickFill(fav);setShowMenu(false);}}
-              style={{padding:"8px 12px",fontSize:13,cursor:"pointer",color:C.text,borderBottom:`1px solid ${C.border}`,fontFamily:"'Lato',sans-serif"}}
+              style={{padding:"8px 12px",fontSize:13,cursor:"pointer",color:C.text,borderBottom:`1px solid ${C.border}`,fontFamily:"'DM Sans',sans-serif"}}
               onMouseEnter={e=>e.currentTarget.style.background=C.light}
               onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
               {fav.name}
             </div>
           ))}
-          <div onClick={()=>{onEditSingle(emptyMeal());setShowMenu(false);}} style={{padding:"8px 12px",fontSize:13,cursor:"pointer",color:C.accent,fontWeight:700,fontFamily:"'Lato',sans-serif",borderBottom:`1px solid ${C.border}`}}>
+          <div onClick={()=>{onEditSingle(emptyMeal());setShowMenu(false);}} style={{padding:"8px 12px",fontSize:13,cursor:"pointer",color:C.accent,fontWeight:700,fontFamily:"'DM Sans',sans-serif",borderBottom:`1px solid ${C.border}`}}>
             + New meal…
           </div>
-          <div onClick={()=>setShowSplitPicker(true)} style={{padding:"8px 12px",fontSize:13,cursor:"pointer",color:"#7a5fc8",fontWeight:700,fontFamily:"'Lato',sans-serif"}}>
+          <div onClick={()=>setShowSplitPicker(true)} style={{padding:"8px 12px",fontSize:13,cursor:"pointer",color:"#7a5fc8",fontWeight:700,fontFamily:"'DM Sans',sans-serif"}}>
             ⊕ Split meal (different meals for different people)
           </div>
           {showSplitPicker && (
@@ -649,7 +649,7 @@ const MealCard = ({slot, day, type, onEditSingle, onClearSlot, onClearSub, onSpl
           <SingleCard key={m.id} meal={m} compact onEdit={meal=>onEditSingle(meal,i)} onClear={()=>onClearSub(i)} onCookNow={onCookNow} />
         ))}
         <div style={{position:"relative"}} ref={showSplitPicker?menuRef:null}>
-          <button onClick={()=>setShowSplitPicker(f=>!f)} style={{width:"100%",background:"none",border:`1px dashed ${C.border}`,borderRadius:8,padding:"4px 0",fontSize:11,color:C.accent,fontWeight:700,cursor:"pointer",fontFamily:"'Lato',sans-serif"}}>
+          <button onClick={()=>setShowSplitPicker(f=>!f)} style={{width:"100%",background:"none",border:`1px dashed ${C.border}`,borderRadius:8,padding:"4px 0",fontSize:11,color:C.accent,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>
             + Add another
           </button>
           {showSplitPicker && (
@@ -669,7 +669,7 @@ const MealCard = ({slot, day, type, onEditSingle, onClearSlot, onClearSub, onSpl
             </div>
           )}
         </div>
-        <button onClick={onClearSlot} style={{background:"none",border:"none",color:"#ccc",cursor:"pointer",fontSize:10,padding:"2px 0",fontFamily:"'Lato',sans-serif",textAlign:"center"}}>Clear all</button>
+        <button onClick={onClearSlot} style={{background:"none",border:"none",color:"#ccc",cursor:"pointer",fontSize:10,padding:"2px 0",fontFamily:"'DM Sans',sans-serif",textAlign:"center"}}>Clear all</button>
       </div>
     );
   }
@@ -704,10 +704,10 @@ const GroceryList = ({groceryData, customItems, setCustomItems, checkedItems, se
   };
 
   return (
-    <div style={{fontFamily:"'Lato',sans-serif"}}>
+    <div style={{fontFamily:"'DM Sans',sans-serif"}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20,flexWrap:"wrap",gap:12}}>
         <div>
-          <h2 style={{margin:0,fontSize:22,fontFamily:"'Playfair Display',serif",color:C.text}}>🛒 Grocery List</h2>
+          <h2 style={{margin:0,fontSize:22,fontFamily:"'Cormorant Garamond',serif",color:C.text}}>🛒 Grocery List</h2>
           <div style={{fontSize:13,color:C.muted,marginTop:2}}>{checked} of {total} items checked</div>
         </div>
         <div style={{display:"flex",gap:8}}>
@@ -724,7 +724,7 @@ const GroceryList = ({groceryData, customItems, setCustomItems, checkedItems, se
           <div key={sec} style={{marginBottom:13}}>
             <div onClick={() => setExpanded(p => ({...p,[sec]:!p[sec]}))} style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",padding:"8px 12px",background:"#e8f0fc",borderRadius:10,marginBottom:expanded[sec]?6:0,userSelect:"none"}}>
               <span style={{fontSize:18}}>{SECTION_ICONS[sec]}</span>
-              <span style={{fontWeight:700,fontSize:14,color:C.text,flex:1,fontFamily:"'Playfair Display',serif"}}>{sec}</span>
+              <span style={{fontWeight:700,fontSize:14,color:C.text,flex:1,fontFamily:"'Cormorant Garamond',serif"}}>{sec}</span>
               <span style={{fontSize:12,color:C.muted}}>{activeCount} items</span>
               <span style={{fontSize:11,color:"#ccc"}}>{expanded[sec]?"▲":"▼"}</span>
             </div>
@@ -751,7 +751,7 @@ const GroceryList = ({groceryData, customItems, setCustomItems, checkedItems, se
 
       {customItems.length > 0 && (
         <div style={{marginTop:20}}>
-          <div style={{fontWeight:700,fontSize:12,color:C.accent,textTransform:"uppercase",letterSpacing:1,marginBottom:8,fontFamily:"'Playfair Display',serif"}}>Extra Items</div>
+          <div style={{fontWeight:700,fontSize:12,color:C.accent,textTransform:"uppercase",letterSpacing:1,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}}>Extra Items</div>
           {customItems.map(ci => (
             <div key={ci.id} style={{display:"grid",gridTemplateColumns:"1fr 80px 1fr 20px",gap:6,marginBottom:6,alignItems:"center"}}>
               <input value={ci.name} onChange={e=>updCustom(ci.id,"name",e.target.value)} placeholder="Item" style={{...inp(),fontSize:13}} />
@@ -771,10 +771,10 @@ const RecipeLibrary = ({recipes, onDelete, onCookNow, onImport, onEdit, onAddMan
   const [filter, setFilter] = useState("All");
   const filtered = filter === "All" ? recipes : recipes.filter(r => r.recipeSection === filter);
   return (
-    <div style={{fontFamily:"'Lato',sans-serif"}}>
+    <div style={{fontFamily:"'DM Sans',sans-serif"}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20,flexWrap:"wrap",gap:12}}>
         <div>
-          <h2 style={{margin:0,fontSize:22,fontFamily:"'Playfair Display',serif",color:C.text}}>📖 Recipe Library</h2>
+          <h2 style={{margin:0,fontSize:22,fontFamily:"'Cormorant Garamond',serif",color:C.text}}>📖 Recipe Library</h2>
           <div style={{fontSize:13,color:C.muted,marginTop:2}}>{recipes.length} saved recipes</div>
         </div>
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
@@ -803,8 +803,8 @@ const RecipeLibrary = ({recipes, onDelete, onCookNow, onImport, onEdit, onAddMan
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))",gap:14}}>
         {filtered.map(r => (
           <div key={r.id} style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:16,boxShadow:"0 2px 8px rgba(0,0,0,.04)"}}>
-            <div style={{fontSize:11,color:C.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:.8,marginBottom:4,fontFamily:"'Playfair Display',serif"}}>{r.recipeSection}</div>
-            <div style={{fontWeight:700,fontSize:15,color:C.text,fontFamily:"'Playfair Display',serif",lineHeight:1.3,marginBottom:5}}>{r.name}</div>
+            <div style={{fontSize:11,color:C.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:.8,marginBottom:4,fontFamily:"'Cormorant Garamond',serif"}}>{r.recipeSection}</div>
+            <div style={{fontWeight:700,fontSize:15,color:C.text,fontFamily:"'Cormorant Garamond',serif",lineHeight:1.3,marginBottom:5}}>{r.name}</div>
             <div style={{fontSize:12,color:C.muted,marginBottom:7}}>{r.servings} srv · {r.prepTime}min · {r.ingredients?.length||0} ingredients · {r.steps?.length||0} steps</div>
             <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:10}}>{r.dietaryTags?.slice(0,3).map(t=><Badge key={t} label={t} color={TAG_COLORS[t]} small/>)}</div>
             {r.sourceUrl && <div style={{fontSize:11,color:C.accent,marginBottom:10,opacity:.55,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>🔗 {r.sourceUrl}</div>}
@@ -833,7 +833,7 @@ const MealPrep = ({grid}) => {
 
   if (prep.length === 0) {
     return (
-      <div style={{textAlign:"center",padding:"60px 20px",color:C.muted,fontFamily:"'Lato',sans-serif"}}>
+      <div style={{textAlign:"center",padding:"60px 20px",color:C.muted,fontFamily:"'DM Sans',sans-serif"}}>
         <div style={{fontSize:36}}>🍳</div>
         <div style={{marginTop:10,fontSize:15}}>No meals tagged "Meal Prep" yet</div>
         <div style={{fontSize:13,marginTop:6,opacity:.7}}>Tag a meal as "Meal Prep" in the planner to see it here</div>
@@ -842,9 +842,9 @@ const MealPrep = ({grid}) => {
   }
 
   return (
-    <div style={{fontFamily:"'Lato',sans-serif"}}>
+    <div style={{fontFamily:"'DM Sans',sans-serif"}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-        <h2 style={{margin:0,fontSize:22,fontFamily:"'Playfair Display',serif",color:C.text}}>🍳 Meal Prep</h2>
+        <h2 style={{margin:0,fontSize:22,fontFamily:"'Cormorant Garamond',serif",color:C.text}}>🍳 Meal Prep</h2>
         <div style={{background:C.light,border:`1px solid ${C.border}`,borderRadius:8,padding:"6px 14px",fontSize:13,fontWeight:700,color:C.accent}}>Total: {total} min</div>
       </div>
       <div style={{fontSize:13,color:C.muted,marginBottom:16}}>Cook longest first — tick off as you go:</div>
@@ -852,7 +852,7 @@ const MealPrep = ({grid}) => {
         <div key={m.id} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"14px 16px",borderRadius:12,marginBottom:10,background:checked[m.id]?"#f5fcf5":C.card,border:`1px solid ${checked[m.id]?"#c8e6c9":C.border}`,transition:"all .15s"}}>
           <input type="checkbox" checked={!!checked[m.id]} onChange={() => setChecked(p => ({...p,[m.id]:!p[m.id]}))} style={{accentColor:C.accent,cursor:"pointer",width:18,height:18,marginTop:2}} />
           <div style={{flex:1}}>
-            <div style={{fontWeight:700,fontSize:14,color:C.text,fontFamily:"'Playfair Display',serif",textDecoration:checked[m.id]?"line-through":"none"}}>{i+1}. {m.name}</div>
+            <div style={{fontWeight:700,fontSize:14,color:C.text,fontFamily:"'Cormorant Garamond',serif",textDecoration:checked[m.id]?"line-through":"none"}}>{i+1}. {m.name}</div>
             <div style={{fontSize:12,color:C.muted,marginTop:2}}>{day} · {type} · {m.servings} srv</div>
           </div>
           <div style={{background:C.light,border:`1px solid ${C.border}`,borderRadius:8,padding:"4px 10px",fontSize:12,fontWeight:700,color:C.accent,whiteSpace:"nowrap"}}>{m.prepTime} min</div>
@@ -901,10 +901,10 @@ section from: Produce,Meat & Seafood,Dairy & Eggs,Pantry & Dry Goods,Frozen,Bake
   const avgWeekly = receipts.length ? totalSpent / Math.max(1,Math.ceil(receipts.length/4)) : 0;
 
   return (
-    <div style={{fontFamily:"'Lato',sans-serif"}}>
+    <div style={{fontFamily:"'DM Sans',sans-serif"}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20,flexWrap:"wrap",gap:12}}>
         <div>
-          <h2 style={{margin:0,fontSize:22,fontFamily:"'Playfair Display',serif",color:C.text}}>🧾 Receipt Tracker</h2>
+          <h2 style={{margin:0,fontSize:22,fontFamily:"'Cormorant Garamond',serif",color:C.text}}>🧾 Receipt Tracker</h2>
           <div style={{fontSize:13,color:C.muted,marginTop:2}}>{receipts.length} receipts · track spending over time</div>
         </div>
         <div>
@@ -923,14 +923,14 @@ section from: Produce,Meat & Seafood,Dairy & Eggs,Pantry & Dry Goods,Frozen,Bake
             {[{label:"Total Spent",value:`£${totalSpent.toFixed(2)}`,icon:"💷"},{label:"Avg Weekly",value:`£${avgWeekly.toFixed(2)}`,icon:"📅"},{label:"Top Category",value:topSection?`${SECTION_ICONS[topSection[0]]||""} ${topSection[0]}`:"—",icon:"🏆"},{label:"Shops",value:Object.keys(byStore).length,icon:"🏪"}].map(s=>(
               <div key={s.label} style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:"14px 16px"}}>
                 <div style={{fontSize:22}}>{s.icon}</div>
-                <div style={{fontWeight:700,fontSize:18,color:C.text,marginTop:4,fontFamily:"'Playfair Display',serif"}}>{s.value}</div>
+                <div style={{fontWeight:700,fontSize:18,color:C.text,marginTop:4,fontFamily:"'Cormorant Garamond',serif"}}>{s.value}</div>
                 <div style={{fontSize:11,color:C.muted,textTransform:"uppercase",letterSpacing:.5}}>{s.label}</div>
               </div>
             ))}
           </div>
           {Object.keys(bySection).length > 0 && (
             <div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:20,marginBottom:24}}>
-              <div style={{fontWeight:700,fontSize:14,fontFamily:"'Playfair Display',serif",color:C.text,marginBottom:14}}>Spending by Category</div>
+              <div style={{fontWeight:700,fontSize:14,fontFamily:"'Cormorant Garamond',serif",color:C.text,marginBottom:14}}>Spending by Category</div>
               {Object.entries(bySection).sort((a,b)=>b[1]-a[1]).map(([sec,amt]) => {
                 const pct = Math.round(amt/totalSpent*100)||0;
                 return (
@@ -962,7 +962,7 @@ section from: Produce,Meat & Seafood,Dairy & Eggs,Pantry & Dry Goods,Frozen,Bake
         <div key={r.id} style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:16,marginBottom:12}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
             <div>
-              <div style={{fontWeight:700,fontSize:15,color:C.text,fontFamily:"'Playfair Display',serif"}}>{r.store||"Unknown Store"}</div>
+              <div style={{fontWeight:700,fontSize:15,color:C.text,fontFamily:"'Cormorant Garamond',serif"}}>{r.store||"Unknown Store"}</div>
               <div style={{fontSize:12,color:C.muted,marginTop:2}}>{r.date||"Date unknown"} · {r.items?.length||0} items · <span style={{fontWeight:700,color:C.accent}}>£{(r.total||0).toFixed(2)}</span></div>
             </div>
             <button onClick={() => setReceipts(p => p.filter(x => x.id!==r.id))} style={btn("#fef0f0","#e86b5f",{fontSize:12,padding:"5px 10px"})}>Delete</button>
@@ -1090,27 +1090,27 @@ export default function App() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
         * { box-sizing:border-box; margin:0; padding:0; }
         ::-webkit-scrollbar { width:5px; }
         ::-webkit-scrollbar-thumb { background:#b8c8dc; border-radius:3px; }
-        input, select, textarea { font-family:'Lato',sans-serif; }
+        input, select, textarea { font-family:'DM Sans',sans-serif; }
         input:focus, select:focus, textarea:focus { border-color:#2d6be4 !important; box-shadow:0 0 0 2px rgba(45,107,228,.12) !important; }
       `}</style>
 
       <div style={{minHeight:"100vh",background:C.bg}}>
         {/* Header */}
         <div style={{background:`linear-gradient(135deg,${C.dark} 0%,#1e3a6e 100%)`,color:"#fff",padding:"0 20px"}}>
-          <div style={{maxWidth:1400,margin:"0 auto"}}>
+          <div style={{maxWidth:"100%",margin:"0 auto"}}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0",flexWrap:"wrap",gap:10}}>
               <div>
-                <h1 style={{fontFamily:"'Playfair Display',serif",fontSize:22,fontWeight:700}}>🍽️ Weekly Meal Planner</h1>
+                <h1 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:22,fontWeight:700}}>🍽️ Weekly Meal Planner</h1>
                 <div style={{fontSize:11,opacity:.45,marginTop:1}}>Plan · Shop · Cook</div>
               </div>
               <div style={{display:"flex",gap:10,flexWrap:"wrap",alignItems:"center"}}>
                 {[{l:"Planned",v:`${named.length}/${DAYS.length*MEAL_TYPES.length}`},{l:"Out",v:eatingOut},{l:"Leftovers",v:leftovers},{l:"Prep",v:`${prepTime}m`}].map(s => (
                   <div key={s.l} style={{textAlign:"center",background:"rgba(255,255,255,.07)",borderRadius:10,padding:"5px 12px"}}>
-                    <div style={{fontSize:16,fontWeight:700,fontFamily:"'Playfair Display',serif"}}>{s.v}</div>
+                    <div style={{fontSize:16,fontWeight:700,fontFamily:"'Cormorant Garamond',serif"}}>{s.v}</div>
                     <div style={{fontSize:9,opacity:.45,textTransform:"uppercase",letterSpacing:.5}}>{s.l}</div>
                   </div>
                 ))}
@@ -1119,7 +1119,7 @@ export default function App() {
             </div>
             <div style={{display:"flex",gap:0,borderTop:"1px solid rgba(255,255,255,.07)"}}>
               {TABS.map(t => (
-                <button key={t.id} onClick={() => setTab(t.id)} style={{background:"none",border:"none",color:tab===t.id?"#7eb8f7":"rgba(255,255,255,.4)",padding:"10px 16px",fontSize:13,fontWeight:700,cursor:"pointer",borderBottom:tab===t.id?"2px solid #7eb8f7":"2px solid transparent",transition:"all .15s",fontFamily:"'Lato',sans-serif"}}>
+                <button key={t.id} onClick={() => setTab(t.id)} style={{background:"none",border:"none",color:tab===t.id?"#7eb8f7":"rgba(255,255,255,.4)",padding:"10px 16px",fontSize:13,fontWeight:700,cursor:"pointer",borderBottom:tab===t.id?"2px solid #7eb8f7":"2px solid transparent",transition:"all .15s",fontFamily:"'DM Sans',sans-serif"}}>
                   {t.label}
                 </button>
               ))}
@@ -1128,22 +1128,22 @@ export default function App() {
         </div>
 
         {/* Content */}
-        <div style={{maxWidth:1400,margin:"0 auto",padding:"22px 16px"}}>
+        <div style={{maxWidth:"100%",margin:"0 auto",padding:"22px 32px"}}>
 
           {tab === "planner" && (
             <div style={{overflowX:"auto"}}>
-              <div style={{display:"grid",gridTemplateColumns:"68px repeat(7,1fr)",gap:6,minWidth:800}}>
+              <div style={{display:"grid",gridTemplateColumns:"80px repeat(7,1fr)",gap:8,minWidth:900}}>
                 {/* Day headers */}
                 <div />
                 {DAYS.map(day => (
-                  <div key={day} style={{textAlign:"center",fontWeight:700,fontSize:12,color:C.text,padding:"6px 4px",borderBottom:`2px solid ${C.border}`,fontFamily:"'Playfair Display',serif"}}>
+                  <div key={day} style={{textAlign:"center",fontWeight:700,fontSize:13,color:C.text,padding:"8px 4px",borderBottom:`2px solid ${C.border}`,fontFamily:"'Cormorant Garamond',serif"}}>
                     {day}
                   </div>
                 ))}
                 {/* Meal rows — use Fragment with key to avoid the keyed-fragment bug */}
                 {MEAL_TYPES.map(type => (
                   <Fragment key={type}>
-                    <div style={{display:"flex",alignItems:"flex-start",paddingTop:8,fontSize:10,fontWeight:700,color:C.accent,textTransform:"uppercase",letterSpacing:.5,fontFamily:"'Playfair Display',serif"}}>
+                    <div style={{display:"flex",alignItems:"flex-start",paddingTop:10,fontSize:11,fontWeight:700,color:C.accent,textTransform:"uppercase",letterSpacing:.5,fontFamily:"'Cormorant Garamond',serif"}}>
                       {type}
                     </div>
                     {DAYS.map(day => (
