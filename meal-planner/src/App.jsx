@@ -5,13 +5,13 @@ const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sun
 const MEAL_TYPES = ["Breakfast","Lunch","Dinner","Snacks"];
 const UNITS = ["whole","g","kg","ml","l","tsp","tbsp","cup","oz","lb","bunch","clove","slice","tin","pack","handful","pinch","sprig","head"];
 const PREP_TIMES = [5,10,15,20,30,45,60,90,120];
-const MEAL_TAGS = ["Quick","Meal Prep","Leftover","Meal Out","Eating Out","Skip"];
+const MEAL_TAGS = ["Quick","Meal Prep","Leftover","Skip"];
 const DIETARY_TAGS = ["Vegetarian","Vegan","Gluten-Free","Dairy-Free","High Protein","Low Carb","Keto"];
 const GROCERY_SECTIONS = ["Produce","Meat & Seafood","Dairy & Eggs","Pantry & Dry Goods","Frozen","Bakery & Bread","Beverages","Condiments & Sauces","Snacks","Home","Utility","Bathroom","Other"];
 const SECTION_ICONS = {"Produce":"🥦","Meat & Seafood":"🥩","Dairy & Eggs":"🥚","Pantry & Dry Goods":"🫙","Frozen":"❄️","Bakery & Bread":"🍞","Beverages":"🧃","Condiments & Sauces":"🧴","Snacks":"🍿","Home":"🏠","Utility":"🔧","Bathroom":"🧼","Other":"📦"};
 const RECIPE_SECTIONS = ["Breakfast","Lunch","Dinner","Snacks","Leftover"];
 const TAG_COLORS = {"Vegetarian":"#4caf78","Vegan":"#6bc98a","Gluten-Free":"#e8a44a","Dairy-Free":"#9b7fe8","High Protein":"#e86b5f","Low Carb":"#5ba3e0","Keto":"#d4a843"};
-const MEAL_TAG_COLORS = {"Quick":"#4caf78","Meal Prep":"#e8a44a","Leftover":"#9b7fe8","Meal Out":"#e86b5f","Eating Out":"#5ba3e0","Skip":"#aaa"};
+const MEAL_TAG_COLORS = {"Quick":"#4caf78","Meal Prep":"#e8a44a","Leftover":"#9b7fe8","Meal Out":"#e86b5f","Skip":"#aaa"};
 const C = {bg:"#f0f4f8",card:"#ffffff",border:"#cdd8e8",accent:"#2d6be4",dark:"#0f1f3d",light:"#e8f0fc",text:"#1a2840",muted:"#7a8fa8"};
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -45,7 +45,7 @@ const buildGrocery = (grid, customItems) => {
   const map = {};
   const leftoverIds = new Set(getAllMeals(grid).filter(({meal:m}) => m.leftoverFrom).map(({meal:m}) => m.id));
   getAllMeals(grid).forEach(({meal,day,type}) => {
-    if (leftoverIds.has(meal.id) || meal.tags?.includes("Eating Out") || meal.tags?.includes("Skip")) return;
+    if (leftoverIds.has(meal.id) || meal.tags?.includes("Eating Out") || meal.tags?.includes("Meal Out") || meal.tags?.includes("Skip")) return;
     (meal.ingredients||[]).forEach(ing => {
       if (!ing.name?.trim()) return;
       const k = `${ing.name.toLowerCase().trim()}||${ing.unit}||${ing.section||"Other"}`;
@@ -616,6 +616,9 @@ const MealCard = ({slot, day, type, onEditSingle, onClearSlot, onClearSub, onSpl
           ))}
           <div onClick={()=>{onEditSingle(emptyMeal());setShowMenu(false);}} style={{padding:"8px 12px",fontSize:13,cursor:"pointer",color:C.accent,fontWeight:700,fontFamily:"'DM Sans',sans-serif",borderBottom:`1px solid ${C.border}`}}>
             + New meal…
+          </div>
+          <div onClick={()=>{const m={...emptyMeal(),name:"Meal Out",tags:["Meal Out"],prepTime:0,ingredients:[],steps:[]};onEditSingle(m);setShowMenu(false);}} style={{padding:"8px 12px",fontSize:13,cursor:"pointer",color:"#e86b5f",fontWeight:700,fontFamily:"'DM Sans',sans-serif",borderBottom:`1px solid ${C.border}`}}>
+            🍽️ Meal Out
           </div>
           <div onClick={()=>setShowSplitPicker(true)} style={{padding:"8px 12px",fontSize:13,cursor:"pointer",color:"#7a5fc8",fontWeight:700,fontFamily:"'DM Sans',sans-serif"}}>
             ⊕ Split meal (different meals for different people)
